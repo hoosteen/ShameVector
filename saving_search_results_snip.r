@@ -19,3 +19,4 @@ usearch_corpus <- Corpus(VectorSource(usearch_list))
 usearch_corpus <- tm_map(usearch_corpus, tolower)
 usearch_corpus <- tm_map(usearch_corpus, removePunctuation)
 usearch_corpus <- tm_map(usearch_corpus, function(x) removeWords(x, stopwords()))
+
