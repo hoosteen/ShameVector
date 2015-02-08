@@ -2,6 +2,8 @@
 library(twitteR)
 library(RCurl)
 library(RColorBrewer)
+library(tm)
+library(wordcloud)
 
 #Download certification scheme document
 download.file(url="http://curl.haxx.se/ca/cacert.pem",
@@ -34,10 +36,6 @@ usearch.df <- do.call(rbind,
 #Write #1U data frame to a csv
 write.csv(usearch.df, "C:/Users/Justin/Desktop/usearch3.csv")
 
-#Install & Load "tm" to clean csv
-install.packages("tm", dependencies=TRUE)
-library("tm")
-
 #Clean data in usearch dataframe
 usearch_list <- sapply(usearch, function(x) x$getText())
 usearch_corpus <- Corpus(VectorSource(usearch_list))
@@ -45,10 +43,6 @@ usearch_corpus <- tm_map(usearch_corpus, tolower)
 usearch_corpus <- tm_map(usearch_corpus, removePunctuation)
 usearch_corpus <- tm_map(usearch_corpus, function(x) removeWords(x, stopwords()))
 usearch_corpus <- tm_map(usearch_corpus, PlainTextDocument)
-
-#Install & Load WordCloud Package
-install.packages("wordcloud", dependencies=TRUE)
-library("wordcloud")
 
 #Create wordcloud of top 100 words in #1U hashtag
 wordcloud(usearch_corpus, scale=c(5,0.5), max.words=100, 
