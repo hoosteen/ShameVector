@@ -1,6 +1,5 @@
 #Call the necessary libraries
 library(twitteR)
-library(ROAuth)
 library(RCurl)
 
 #Download certification scheme document
@@ -21,5 +20,6 @@ authURL='https://api.twitter.com/oauth/authorize'
 #Define oauth credentials via twitteR function  
 twittercreds <- setup_twitter_oauth(consumerKey, consumerSecret)
 
-#Call authorization handshake
-twittercreds$handshake(cainfo="C:/Users/Justin/Documents/GitHub/Sentiment_Monitor/cacert.pem")
+#Save authentication settings
+save(twittercreds, file="twitter authentication data.Rdata")
+
