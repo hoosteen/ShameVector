@@ -18,7 +18,7 @@ requestURL='https://api.twitter.com/oauth/request_token'
 accessURL='https://api.twitter.com/oauth/access_token'
 authURL='https://api.twitter.com/oauth/authorize'
 
-#Define oauth credentials via twitteR function
+#Define oauth credentials via twitteR function  
 twittercreds <- setup_twitter_oauth(consumerKey, consumerSecret)
 
 #Call authorization handshake
