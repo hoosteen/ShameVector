@@ -22,4 +22,3 @@ twittercreds <- setup_twitter_oauth(consumerKey, consumerSecret)
 
 #Save authentication settings
 save(twittercreds, file="twitter authentication data.Rdata")
-
