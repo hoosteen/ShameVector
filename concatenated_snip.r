@@ -1,6 +1,7 @@
 #Call the necessary libraries
 library(twitteR)
 library(RCurl)
+library(RColorBrewer)
 
 #Download certification scheme document
 download.file(url="http://curl.haxx.se/ca/cacert.pem",
@@ -31,7 +32,7 @@ usearch.df <- do.call(rbind,
                       lapply(usearch, as.data.frame))
 
 #Write #1U data frame to a csv
-write.csv(usearch.df, "C:/Users/Justin/Desktop/usearch2.csv")
+write.csv(usearch.df, "C:/Users/Justin/Desktop/usearch3.csv")
 
 #Install & Load "tm" to clean csv
 install.packages("tm", dependencies=TRUE)
@@ -49,5 +50,7 @@ usearch_corpus <- tm_map(usearch_corpus, PlainTextDocument)
 install.packages("wordcloud", dependencies=TRUE)
 library("wordcloud")
 
-#Create wordcloud of #1U hashtag
-wordcloud(usearch_corpus)
+#Create wordcloud of top 100 words in #1U hashtag
+wordcloud(usearch_corpus, scale=c(5,0.5), max.words=100, 
+          random.order=FALSE, rot.per=0.35, 
+          use.r.layout=FALSE, colors=brewer.pal(8, "Dark2"))
