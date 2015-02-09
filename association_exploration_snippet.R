@@ -1,11 +1,14 @@
-usearch.tdm <- TermDocumentMatrix(usearch_corpus)
-usearch.tdm
+#Load text mining library
+library(tm)
 
-# Identify terms use at least 10 times
+# Creates document term matrix & assigns to usearch.tdm 
+usearch.tdm <- TermDocumentMatrix(usearch_corpus)
+
+# Identify terms use at least 100 times
 findFreqTerms(usearch.tdm, lowfreq=100)
 
 #Explore association of terms
-findAssocs(usearch.tdm, 'scott', 0.50)
+findAssocs(usearch.tdm, 'corporate', 0.50)
 
 # Remove sparse terms from the TDM
 usearch2.tdm <- removeSparseTerms(usearch.tdm, sparse=0.92)
