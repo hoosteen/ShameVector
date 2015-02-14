@@ -5,18 +5,28 @@ library(RColorBrewer)
 library(tm)
 library(wordcloud)
 
+consumerKey <- "K2mpLnVJuDXlSqvC8KzaWgP5P"
+consumerSecret <- "uzBix30ghVTFEciPOg3kuJLnZ4Kp2CaSJGl0FnIFNFOPBhkCn0"
+access_token <- "14313727-hBhnH9BGe6hqV6nrhUyrUZ5hUi4IQmRW8zYVJgP0C"
+access_token_secret <- "ZrOdr8Dv3k4wwEaOEs52hRkYTaFRoodvyfPXxfw6i8Aqa"
+
 #Define oauth credentials via twitteR function  
 twittercreds <- setup_twitter_oauth(consumerKey, consumerSecret)
+
+Yes
 
 #Save authentication settings
 save(twittercreds, file="twitter authentication data.Rdata")
 
-#Search #AdviceForYoungJournalists hashtag & save 1500 tweets to variable YoungJourno
-YoungJourno <- searchTwitter("#AdviceForYoungJournalists", n=1000)
+#Input a SEARCH TERM or hashtag & save 1500 tweets to variable
+SEARCH_TERM <- searchTwitter(
 
-#Bind #AdviceForYoungJournalists search results to a data frame
-YoungJourno.df <- do.call(rbind,
-                      lapply(YoungJourno, as.data.frame))
+#Search term & number of tweets
+  "SEARCH_TERM", n=1000)
+
+#Bind SEARCH TERM search results to a data frame
+SEARCH_TERM.df <- do.call(rbind,
+                      lapply(SEARCH_TERM, as.data.frame))
 
 #Export data frame to csv
 write.csv(YoungJourno.df, file="YoungJourno.csv")
