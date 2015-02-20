@@ -1,2 +1,2 @@
 #Sentiment_Analysis
-A set of scripts to look into sentiment on Twitter surrounding particular hashtags and accounts.
+A set of R scripts created during exploratory analysis of various documents to prepare for sentiment mining.
