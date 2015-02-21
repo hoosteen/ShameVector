@@ -29,3 +29,8 @@ BB.text$Date <- strptime(as.character(BB.text$Date),
 # Reassign column names
 colnames(BB.text) <- c("text", "year", "date")
 
+# tm_map allows transformation to a corpus
+bb_corpus<- Corpus(VectorSource(BB.text))
+
+# stem the documents
+bb.text_stm<- tm_map(bb_corpus, stemDocument)
