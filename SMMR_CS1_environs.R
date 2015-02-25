@@ -1,4 +1,6 @@
+require("plyr")
 require("dplyr")
 require("reshape")
 require("tm")
 require("SnowballC")
+require("ggplot2")
