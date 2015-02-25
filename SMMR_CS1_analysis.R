@@ -72,7 +72,7 @@ BB.sum <- BB.sentiment$score
 
 ## /////CENTERING DATA////// ##
 
-#Center the data by subtracting the sum from the mean
+#Center the data by subtracting the mean from the sum
 BB.sentiment$centered <- BB.sum - BB.sentiment$mean
 
 # Label observations above and below centered 
