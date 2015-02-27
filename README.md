@@ -1,5 +1,6 @@
-#Sentiment_Analysis
-##Building asentiment classifier for opposition research
+##Sentiment_Analysis
+
+###Building a sentiment classifier for opposition research
 
 Lots of learning, experimentation, and debugging to be done here.
 
