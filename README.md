@@ -1,4 +1,4 @@
-##Sentiment_Analysis
+##ShameVector
 
 Sketches toward a sentiment classifier as an opposition research tool.
 
