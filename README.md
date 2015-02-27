@@ -1,2 +1,6 @@
 #Sentiment_Analysis
-A set of R scripts created during exploratory analysis of various documents to prepare for sentiment mining.
+##Building asentiment classifier for opposition research
+
+Lots of learning, experimentation, and debugging to be done here.
+
+If you want to play with this, I'll warn you now that everything is *probably* broken.
