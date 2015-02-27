@@ -29,4 +29,3 @@ neg_all <- c(neg, neg_finance)
 
 # Import Beige Book 
 BB <- read.csv("C:/Users/Justin/Documents/R/beigebook_summary.csv")
-
