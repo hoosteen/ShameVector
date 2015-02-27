@@ -1,7 +1,7 @@
 ##Sentiment_Analysis
 
-I'm building a sentiment classifier as an opposition research tool.
+Sketches toward a sentiment classifier as an opposition research tool.
 
-Lots of learning, experimentation, and debugging to be done here.
+Lots of learning, experimentation, and debugging will be happening here.
 
-If you want to play with this, you should know that everything is *probably* broken.
+If you want to play with any of these scripts, you should know everything is *probably* broken until further notice.
