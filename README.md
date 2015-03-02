@@ -1,5 +1,5 @@
 #ShameVector                                                                  
-###Sketching toward a sentiment classifier as an opposition research tool.
+####Sketching toward a Naive Bayes sentiment classifier in R as a digital pposition research tool.
 
 Lots of learning, experimentation, and debugging will be happening here.
 
