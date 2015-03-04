@@ -1,21 +1,26 @@
+##TO-DO
+## - 
+##  - 
+
 #Load Packages
 
 library(dplyr)
 
 #Display Data Frame
-head(pandas.df)
-pandas.df
+head(dataframe.df)
+dataframe.df
+
 #Convert to a local data frame
-pandas <- tbl_df(pandas.df)
+dataframe <- tbl_df(dataframe.df)
 
 #Display in full data frame
-data.frame(head(pandas))
+data.frame(head(dataframe))
 
-# Display the text, fave status & number of faves for favorited tweets
+# Display the text, fave status & number of faves for favorited & RT'd tweets
 
-filteredmobile <- tmobile %>%
-  group_by(filteredmobile, isRetweet) %>%
+filteredframe <- variable %>%
+  group_by(filteredframe, isRetweet) %>%
   select(text, favorited, favoriteCount)  %>%
-  filter(filteredmobile, isRetweet==TRUE)	
+  filter(filteredframe, isRetweet==TRUE)	
 
-filteredmobile
+filteredframe
