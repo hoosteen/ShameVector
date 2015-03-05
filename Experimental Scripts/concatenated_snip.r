@@ -7,7 +7,7 @@ library(wordcloud)
 
 #Download certification scheme document
 download.file(url="http://curl.haxx.se/ca/cacert.pem",
-              destfile="C:/Users/Justin/Documents/GitHub/Sentiment_Monitor/cacert.pem")
+              destfile="C:/Users/Justin/Documents/GitHub/ShameVector/Utilities/cacert.pem")
 
 #Define Twitter API keys and tokens
 consumerKey <- "K2mpLnVJuDXlSqvC8KzaWgP5P"
@@ -26,23 +26,25 @@ twittercreds <- setup_twitter_oauth(consumerKey, consumerSecret)
 #Save authentication settings
 save(twittercreds, file="twitter authentication data.Rdata")
 
-#Search #1U hashtag & save 1500 tweets to variable usearch
-usearch <- searchTwitter("#1u", n=1500)
+#Search a hashtag & save 1500 tweets to variable searchresults
+searchresults <- searchTwitter("@TMobile", n=1500)
 
-#Bind #1U search results to a data frame
-usearch.df <- do.call(rbind,
-                      lapply(usearch, as.data.frame))
+#Bind search results to a data frame
+searchresults.df <- do.call(rbind,
+                            lapply(searchresults, as.data.frame))
 
-#Write #1U data frame to a csv
-write.csv(usearch.df, "C:/Users/Justin/Desktop/usearch3.csv")
+#Write searchresults data frame to a csv
+write.csv(searchresults.df, "C:/Users/Justin/Documents/GitHub/ShameVector/Case Studies/TestData/searchresults.csv")
 
-#Clean data in usearch dataframe
-usearch_list <- sapply(usearch, function(x) x$getText())
-usearch_corpus <- Corpus(VectorSource(usearch_list))
-usearch_corpus <- tm_map(usearch_corpus, tolower)
-usearch_corpus <- tm_map(usearch_corpus, removePunctuation)
-usearch_corpus <- tm_map(usearch_corpus, function(x) removeWords(x, stopwords()))
-usearch_corpus <- tm_map(usearch_corpus, PlainTextDocument)
+# Load "tm" to clean csv
+require("tm")
+
+#Clean data in searchresults dataframe
+searchresults_list <- sapply(searchresults, function(x) x$getText())
+searchresults_corpus <- Corpus(VectorSource(searchresults_list))
+searchresults_corpus <- tm_map(searchresults_corpus, tolower)
+searchresults_corpus <- tm_map(searchresults_corpus, removePunctuation)
+searchresults_corpus <- tm_map(searchresults_corpus, function(x) removeWords(x, stopwords()))
 
 #Create wordcloud of top 100 words in #1U hashtag
 wordcloud(usearch_corpus, scale=c(5,0.5), max.words=100, 
