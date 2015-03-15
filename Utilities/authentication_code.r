@@ -4,7 +4,7 @@ library(RCurl)
 
 #Download certification scheme document
 download.file(url="http://curl.haxx.se/ca/cacert.pem",
-              destfile="C:/Users/Justin/Documents/GitHub/Sentiment_Monitor/cacert.pem")
+              destfile="C:/Users/Justin/Documents/GitHub/ShameVector/Utilities/cacert.pem")
 
 #Define Twitter API keys and tokens
 consumerKey <- "K2mpLnVJuDXlSqvC8KzaWgP5P"
