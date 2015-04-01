@@ -1,3 +1,12 @@
+install.packagess("plyr")
+install.packages("dplyr")
+install.packages("reshape")
+install.packages("tm")
+install.packages("SnowballC")
+install.packages("ggplot2")
+install.packages("RColorBrewer")
+install.packages("wordcloud")
+
 require("plyr")
 require("dplyr")
 require("reshape")

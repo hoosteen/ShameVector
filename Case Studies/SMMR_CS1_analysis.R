@@ -1,6 +1,6 @@
 # create a new object "bad" that will hold missing data 
 
-bad <- is.na(BB)
+bad <- is.na(LPD)
 
 # return all missing elements
 
@@ -59,7 +59,7 @@ stnd.stopwords<- stopwords("SMART")
 # discriminatory power. bb.tf will be used as a control 
 # for the creation of our term-document matrix.
 
-bb.tf <- list(weighting = weightTf, 
+LPD.tf <- list(weighting = weightTf, 
               stopwords = bb.stopwords,
               removePunctuation = TRUE,
               tolower = TRUE,
@@ -83,7 +83,7 @@ bb.frequent <- sort(rowSums(as.matrix(bb_tdm)),
 bb.frequent[1:30]
 
 # look at terms with a minimum frequency
-findFreqTerms(bb_tdm, lowfreq = 60)
+findFreqTerms(LPD_tdm, lowfreq = 60)
 
 # positive words added to lexicon:
 
@@ -120,15 +120,15 @@ bb.stopwords <- c(stnd.stopwords, "district",
 # Remove sparse terms from the TDM w/value of 0.95,
 # representing maximal allowed sparsity
 
-BB.95 <- removeSparseTerms(bb_tdm, .95)
+LPD.95 <- removeSparseTerms(LPD_tdm, .95)
 
 # Sort & count row sums of BB.95
-BB.rsums <- sort(rowSums(as.matrix(BB.95)),
+LPD.rsums <- sort(rowSums(as.matrix(LPD.95)),
                  decreasing=TRUE)
 
 # Create a data frame with words & their frequencies
-BBdf.rsums <- data.frame(word=names(BB.rsums),
-                         freq=BB.rsums)
+LPDdf.rsums <- data.frame(word=names(LPD.rsums),
+                         freq=LPD.rsums)
 
 # Create a blue-to-green pallete & name it w/BrewerPal
 
@@ -136,11 +136,11 @@ palette <- brewer.pal(9, "BuGn")
 palette <- palette[-(1:2)]
 
 # Create a PNG and definte where it will be saved
-png(filename="C:/Users/Justin/Documents/GitHub/Sentiment_Monitor/Plots/BB_cloud.png")
+png(filename="C:/Users/Jusmith/Documents/BB_cloud.png")
 
 # Create a wordcloud and define words, freq, & word size
 
-bb.wordcloud <- wordcloud(BBdf.rsums$word, BBdf.rsums$freq,
+LPD.wordcloud <- wordcloud(LPDdf.rsums$word, LPDdf.rsums$freq,
                           random.order=FALSE, colors=palette)
 
 # Compete plot & save the png

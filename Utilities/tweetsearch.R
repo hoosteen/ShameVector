@@ -1,9 +1,17 @@
-#Call the necessary libraries
+#Install & Call the necessary packages
+
+install.packages("twitteR")
+install.packages("RCurl")
+install.packages("RColorBrewer")
+install.packages("tm")
+install.packages("wordcloud")
 library(twitteR)
 library(RCurl)
 library(RColorBrewer)
 library(tm)
 library(wordcloud)
+
+#Add your keys
 
 consumerKey <- "K2mpLnVJuDXlSqvC8KzaWgP5P"
 consumerSecret <- "uzBix30ghVTFEciPOg3kuJLnZ4Kp2CaSJGl0FnIFNFOPBhkCn0"
@@ -13,8 +21,6 @@ access_token_secret <- "ZrOdr8Dv3k4wwEaOEs52hRkYTaFRoodvyfPXxfw6i8Aqa"
 #Define oauth credentials via twitteR function  
 twittercreds <- setup_twitter_oauth(consumerKey, consumerSecret)
 
-Yes
-
 #Save authentication settings
 save(twittercreds, file="twitter authentication data.Rdata")
 
@@ -22,65 +28,66 @@ save(twittercreds, file="twitter authentication data.Rdata")
 SEARCH_TERM <- searchTwitter(
 
 #Search term & number of tweets
-  "SEARCH_TERM", n=1000)
+  "SEARCH_TERM", n=2480)
 
 #Bind SEARCH TERM search results to a data frame
 SEARCH_TERM.df <- do.call(rbind,
                       lapply(SEARCH_TERM, as.data.frame))
 
 #Export data frame to csv
-write.csv(YoungJourno.df, file="YoungJourno.csv")
+write.csv(SEARCH_TERM.df, file="FILENAME.csv")
 
 #convert all text to lower case
-YoungJourno.df <- tolower(YoungJourno.df)
+SEARCH_TERM.df <- tolower(SEARCH_TERM.df)
 
 # Replace blank space ("rt")
-YoungJourno.df <- gsub("rt", "", YoungJourno.df)
+SEARCH_TERM.df <- gsub("rt", "", SEARCH_TERM.df)
 
 # Replace @UserName
-YoungJourno.df <- gsub("@\\w+", "", YoungJourno.df)
+SEARCH_TERM.df <- gsub("@\\w+", "", SEARCH_TERM.df)
 
 # Remove punctuation
-YoungJourno.df <- gsub("[[:punct:]]", "", YoungJourno.df)
+SEARCH_TERM.df <- gsub("[[:punct:]]", "", SEARCH_TERM.df)
 
 # Remove links
-YoungJourno.df <- gsub("http\\w+", "", YoungJourno.df)
+SEARCH_TERM.df <- gsub("http\\w+", "", SEARCH_TERM.df)
 
 # Remove tabs
-YoungJourno.df <- gsub("[ |\t]{2,}", "", YoungJourno.df)
+SEARCH_TERM.df <- gsub("[ |\t]{2,}", "", SEARCH_TERM.df)
 
 # Remove blank spaces at the beginning
-YoungJourno.df <- gsub("^ ", "", YoungJourno.df)
+SEARCH_TERM.df <- gsub("^ ", "", SEARCH_TERM.df)
 
 # Remove blank spaces at the end
-YoungJourno.df <- gsub(" $", "", YoungJourno.df)
+SEARCH_TERM.df <- gsub(" $", "", SEARCH_TERM.df)
 
 # Create corpus from data frame to use text mining library
-YoungJourno_corpus <- Corpus(VectorSource(YoungJourno.df))
+SEARCH_TERM_corpus <- Corpus(VectorSource(SEARCH_TERM.df))
 
 # Remove stopwords from corpus
-YoungJourno_corpus <- tm_map(YoungJourno_corpus, function(x) removeWords(x, stopwords()))
+SEARCH_TERM_corpus <- tm_map(SEARCH_TERM_corpus, 
+                             function(x) removeWords(x, stopwords()))
 
 
 #Create wordcloud of top 100 words in #1U hashtag
-wordcloud(YoungJourno_corpus, scale=c(5,0.5), max.words=100, 
+wordcloud(wydensearch_corpus, scale=c(5,0.5), max.words=100, 
           random.order=FALSE, rot.per=0.35, 
           use.r.layout=FALSE, colors=brewer.pal(8, "Dark2"))
 
 #Load text mining library
 library(tm)
 
-# Creates document term matrix & assigns to YoungJourno.tdm 
-YoungJourno.tdm <- TermDocumentMatrix(YoungJourno_corpus)
+# Creates document term matrix & assigns to SEARCH_TERM.tdm 
+SEARCH_TERM.tdm <- TermDocumentMatrix(SEARCH_TERM_corpus)
 
 # Identify terms use at least 100 times
-findFreqTerms(YoungJourno.tdm, lowfreq=50)
+findFreqTerms(SEARCH_TERM.tdm, lowfreq=50)
 
 #Explore association of terms
-findAssocs(YoungJourno.tdm, 'beyonce', 0.50)
+findAssocs(SEARCH_TERM.tdm, 'beyonce', 0.50)
 
 # Remove sparse terms from the TDM
-YoungJourno2.tdm <- removeSparseTerms(YoungJourno.tdm, sparse=0.92)
+SEARCH_TERM2.tdm <- removeSparseTerms(SEARCH_TERM.tdm, sparse=0.92)
 
 #Convert the TDM to a data frame
-YoungJourno2.df <- as.data.frame(YoungJourno2.tdm)
+SEARCH_TERM2.df <- as.data.frame(SEARCH_TERM2.tdm)
