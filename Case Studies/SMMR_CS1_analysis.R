@@ -1,33 +1,33 @@
 # create a new object "bad" that will hold missing data 
 
-bad <- is.na(LPD)
+bad <- is.na(searchresults)
 
 # return all missing elements
 
-BB[bad]
+searchresults[bad]
 
 ## ///////CLEANING DATA WITH REGEX/////// ##
 
 # gsub substitutes punctuation with a space
 
-BB$text <- gsub('[[:punct:]]', ' ', BB$text)
+searchresults$text <- gsub('[[:punct:]]', ' ', searchresults$text)
 
 # gsub substitues character classes that do not
 # give an output, such as feed, bckspce & tab w/space
 
-BB$text <- gsub('[[:cntrl:]]', ' ', BB$text)
+searchresults$text <- gsub('[[:cntrl:]]', ' ', searchresults$text)
 
 # gsub subs numerical values with digits >=1 w/' '
 
-BB$text <- gsub('//d+', ' ', BB$text)
+searchresults$text <- gsub('//d+', ' ', searchresults$text)
 
 ## ///////CLEANING DATA WITH SHUFFLING/////// ##
 
 # simplify the data frame by keeping the cleaned text, 
 # year and concatenated version of year/month/day
 
-BB.text <- as.data.frame(BB$text)
-BB.text$year <- BB$year
+searchresults.text <- as.data.frame(searchresults$text)
+searchresults.sn <- searchresults$screenName
 BB.text$Date <- as.Date(paste(BB$year, 
                               BB$month, 
                               BB$day, sep = "-"),
@@ -43,11 +43,13 @@ colnames(BB.text) <- c("text", "year", "date")
 
 # tm_map allows transformation to a corpus
 
-bb_corpus <- Corpus(VectorSource(BB.text))
+searchresults_corpus <- Corpus(VectorSource(searchresults.text))
 
 # stem the documents
 
-bb.text_stm <- tm_map(bb_corpus, stemDocument)
+##debug: In library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE,  :
+##there is no package called ‘SnowballC’
+##searchresults.text_stm <- tm_map(searchresults_corpus, stemDocument)
 
 # Standard stopwords ie the SMART list are in TM
 
