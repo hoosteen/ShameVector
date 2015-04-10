@@ -6,6 +6,7 @@ install.packages("tm")
 install.packages("wordcloud")
 install.packages("httpuv")
 install.packages("dplyr")
+install.packages("SnowballC")
 
 #Call the necessary libraries
 library("twitteR")
@@ -15,6 +16,7 @@ library("tm")
 library("wordcloud")
 library("httpuv")
 library("dplyr")
+library("SnowballC")
 
 #Download certification scheme document
 download.file(url="http://curl.haxx.se/ca/cacert.pem",
@@ -38,29 +40,25 @@ twittercreds <- setup_twitter_oauth(consumerKey, consumerSecret)
 save(twittercreds, file="twitter authentication data.Rdata")
 
 #Search a hashtag & save max # of tweets to variable searchresults
-searchresults <- searchTwitter("SEARCHTERM", n=2480)
+searchresults <- searchTwitter("#WalterScott", n=2480)
 
 #Bind search results to a data frame
 searchresults.df <- do.call(rbind,
-                            lapply(BB, as.data.frame))
+                            lapply(searchresults, as.data.frame))
 
 #Write searchresults data frame to a csv
-write.csv(searchresults.df, "~")
+write.csv(searchresults.df, "~/GitHub/ShameVector/TestData/WalterScott.csv")
 
 #Clean data in searchresults dataframe
 searchresults_list <- sapply(searchresults, function(x) x$getText())
-searchresults_corpus <- Corpus(VectorSource(searchresults))
-searchresults_corpus <- tm_map(searchresults_corpus, tolower)
-searchresults_corpus <- tm_map(searchresults_corpus, removePunctuation)
-searchresults_corpus <- tm_map(searchresults_corpus, function(x) removeWords(x, stopwords()))
 
 # create a new object "bad" that will hold missing data 
 
-bad <- is.na(searchresults)
+NAs <- is.na(searchresults)
 
 # return all missing elements
 
-searchresults[bad]
+searchresults[NAs]
 
 ## ///////CLEANING DATA WITH REGEX/////// ##
 
@@ -90,12 +88,13 @@ searchresults.sn <- searchresults$screenName
 # tm_map allows transformation to a corpus
 
 searchresults_corpus <- Corpus(VectorSource(searchresults.text))
+searchresults_corpus <- tm_map(searchresults_corpus, tolower)
+searchresults_corpus <- tm_map(searchresults_corpus, removePunctuation)
+searchresults_corpus <- tm_map(searchresults_corpus, function(x) removeWords(x, stopwords()))
 
 # stem the documents
 
-##debug: In library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE,  :
-##there is no package called ‘SnowballC’
-##searchresults.text_stm <- tm_map(searchresults_corpus, stemDocument)
+searchresults.text_stm <- tm_map(searchresults_corpus, stemDocument)
 
 # Standard stopwords ie the SMART list are in TM
 
@@ -104,34 +103,38 @@ stnd.stopwords<- stopwords("SMART")
 ## ////// TRANSFORMING DATA FOR SORTING ////// ## 
 
 # useful to eliminate words that lack 
-# discriminatory power. bb.tf will be used as a control 
+# discriminatory power. searchresults.tf will be used as a control 
 # for the creation of our term-document matrix.
 
-LPD.tf <- list(weighting = weightTf, 
-               stopwords = bb.stopwords,
+searchresults.tf <- list(weighting = weightTf, 
+               stopwords = stnd.stopwords,
                removePunctuation = TRUE,
                tolower = TRUE,
                minWordLength = 4,
                removeNumbers = TRUE)
 
+# Convert to text document
+
+searchresults_corpus_text <- tm_map(searchresults_corpus, PlainTextDocument)
+
 # create a term-document matrix
 
-bb_tdm <- TermDocumentMatrix(bb_corpus, 
-                             control = bb.tf)
+searchresults_tdm <- TermDocumentMatrix(searchresults_corpus_text, 
+                             control = searchresults.tf)
 
 # sorting frequent words in TDM to ID words lacking
 # discriminatory power to add to custom stopword 
 # lexicon
 
-bb.frequent <- sort(rowSums(as.matrix(bb_tdm)), 
+sr.frequent <- sort(rowSums(as.matrix(searchresults_tdm)), 
                     decreasing = TRUE)
 
 # further exploration
 
-bb.frequent[1:30]
+sr.frequent[1:30]
 
 # look at terms with a minimum frequency
-findFreqTerms(LPD_tdm, lowfreq = 60)
+findFreqTerms(searchresults_tdm, lowfreq = 60)
 
 # positive words added to lexicon:
 
@@ -159,15 +162,15 @@ addl.stopwords <- c(stnd.stopwords, "WORDSTOREMOVE")
 # Remove sparse terms from the TDM w/value of 0.95,
 # representing maximal allowed sparsity
 
-LPD.95 <- removeSparseTerms(LPD_tdm, .95)
+searchresults_corpus.95 <- removeSparseTerms(searchresults_tdm, .95)
 
 # Sort & count row sums of BB.95
-LPD.rsums <- sort(rowSums(as.matrix(LPD.95)),
+searchresults.rsums <- sort(rowSums(as.matrix(searchresults_corpus.95)),
                   decreasing=TRUE)
 
 # Create a data frame with words & their frequencies
-LPDdf.rsums <- data.frame(word=names(LPD.rsums),
-                          freq=LPD.rsums)
+searchresults.rsums <- data.frame(word=names(searchresults.rsums),
+                          freq=searchresults.rsums)
 
 # Create a blue-to-green pallete & name it w/BrewerPal
 
@@ -179,7 +182,7 @@ png(filename="~/cloud.png")
 
 # Create a wordcloud and define words, freq, & word size
 
-LPD.wordcloud <- wordcloud(LPDdf.rsums$word, LPDdf.rsums$freq,
+searchresults.wordcloud <- wordcloud(searchresults.rsums$word, searchresults.rsums$freq,
                            random.order=FALSE, colors=palette)
 
 # Compete plot & save the png
